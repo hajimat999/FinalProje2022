@@ -1,0 +1,45 @@
+﻿@model List<Contact>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="main-panel">
+    <div class="table-wrap">
+        <div class="category">
+            <h2>Contact</h2>
+            
+        </div>
+        <table class="table">
+            <thead class="thead-primary">
+                <tr>
+                    <th>Username</th>
+                    <th>Message</th>
+                    <th>Email</th>
+                    <th>Date</th>
+                    <th>Settings</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (Contact contact in Model)
+                {
+                    <tr>
+                        <td>@contact.Name</td>
+                        <td>@contact.Subject</td>
+                        <td>@contact.Email</td>
+                        <td>@contact.CreatedAt.ToShortDateString()</td>
+                       
+                        <td>
+                            <div class="div">
+                                <a asp-area="admin" asp-controller="Contact" asp-action="Delete" asp-route-id="@contact.Id"><i class="fa-solid fa-trash"></i></a>
+                                
+                            </div>
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

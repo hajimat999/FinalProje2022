@@ -1,0 +1,17 @@
+﻿@model ProductColor
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="main-panel">
+    <div class="create">
+        <h2>Update Product Count</h2>
+        <form method="post">
+            <label for="">Product Count:</label> <br>
+            <input asp-for="ProductCount" placeholder="Count"><br>
+            <span class="text-danger" asp-validation-for="ProductCount"></span> <br />
+            <button type="submit">Update</button>
+        </form>
+    </div>
+</div>
+

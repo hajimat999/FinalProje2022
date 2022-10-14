@@ -1,0 +1,26 @@
+﻿@model Information
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="main-panel">
+    <div class="create">
+        <h2>Create Information</h2>
+        <form method="post">
+            <label for="">Return Request:</label> <br>
+            <input asp-for="ReturnRequest" placeholder="Return Request"><br>
+            <span class="text-danger" asp-validation-for="ReturnRequest"></span> <br />
+            <label for="">Guarantee:</label> <br>
+            <input asp-for="Guarantee" placeholder="Guarantee"><br>
+            <span class="text-danger" asp-validation-for="Guarantee"></span> <br />
+            <label for="">Shipping:</label> <br>
+            <input asp-for="Shipping" placeholder="Shipping"><br>
+            <span class="text-danger" asp-validation-for="Shipping"></span> <br />
+            <label for="">Key:</label> <br>
+            <input asp-for="Key" placeholder="Key"><br>
+            <span class="text-danger" asp-validation-for="Key"></span> <br />
+            <button type="submit">Create</button>
+        </form>
+    </div>
+</div>
+

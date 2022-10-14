@@ -1,0 +1,50 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
+@model List<Category>
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="main-panel">
+    <div class="table-wrap">
+        <div class="category">
+            <h2>Category</h2>
+            <a asp-area="Admin" asp-controller="category" asp-action="Create">Create Category</a>
+        </div>
+        <table class="table">
+            <thead class="thead-primary">
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Create</th>
+                    <th>Update</th>
+                    <th>Settings</th>
+                </tr>
+            </thead>
+            <tbody>
+            
+               @foreach (Category category in Model)
+               {
+                    <tr>
+                        <td>@category.Id</td>
+                        <td>@category.CategoryName</td>
+                        <td>@category.CreatedAt.ToShortDateString()</td>
+                        <td>@category.UpdateAt.ToShortDateString()</td>
+                        <td>
+                            <div class="div">
+                                <a asp-area="admin" asp-controller="category" asp-action="delete" asp-route-id="@category.Id"><i class="fa-solid fa-trash"></i></a>
+                                <a asp-area="admin" asp-controller="category" asp-action="update" asp-route-id="@category.Id"><i class="fa-solid fa-pen"></i>
+
+                                 </a>
+                               
+                            </div>
+                        </td>
+                    </tr>
+
+               }      
+            </tbody>
+        </table>
+    </div>
+</div>
+

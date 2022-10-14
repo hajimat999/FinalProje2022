@@ -1,0 +1,17 @@
+﻿@model Brand
+@{
+    ViewData["Title"] = "Update";
+}
+
+<div class="main-panel">
+    <div class="create">
+        <h2>Update Brand</h2>
+        <form method="post">
+            <label for="">Name:</label> <br>
+            <input asp-for="BrandName" placeholder="Name"><br>
+            <span class="text-danger" asp-validation-for="BrandName"></span> <br />
+            <button type="submit">Update</button>
+        </form>
+    </div>
+</div>
+

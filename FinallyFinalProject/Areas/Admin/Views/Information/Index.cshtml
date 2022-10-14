@@ -1,0 +1,54 @@
+﻿@model List<Information>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="main-panel">
+    <div class="table-wrap">
+        <div class="category">
+            <h2>Information</h2>
+            <a asp-area="Admin" asp-controller="Information" asp-action="Create">Create Information</a>
+        </div>
+        <table class="table">
+            <thead class="thead-primary">
+                <tr>
+                    <th>Id</th>
+                    <th>ReturnRequest</th>
+                    <th>Guarantee</th>
+                    <th>Shipping</th>
+                    <th>Key</th>
+                    <th>Create</th>
+                    <th>Update</th>
+                    <th>Settings</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (Information information in Model)
+                {
+                    <tr>
+                        <td>@information.Id</td>
+                        <td>@information.ReturnRequest</td>
+                        <td>@information.Guarantee</td>
+                        <td>@information.Shipping</td>
+                        <td>@information.Key</td>
+                        <td>@information.CreatedAt.ToShortDateString()</td>
+                        <td>@information.UpdateAt.ToShortDateString()</td>
+                        <td>
+                            <div class="div">
+                                <a style="display:contents;" asp-area="admin" asp-controller="information" asp-action="delete" asp-route-id="@information.Id"><i class="fa-solid fa-trash"></i></a>
+                                <a style="display:contents;" asp-area="admin" asp-controller="information" asp-action="update" asp-route-id="@information.Id">
+                                    <i class="fa-solid fa-pen"></i>
+
+                                </a>
+                                
+                            </div>
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

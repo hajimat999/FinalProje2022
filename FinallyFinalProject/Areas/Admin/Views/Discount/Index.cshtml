@@ -1,0 +1,48 @@
+﻿@model List<DiscountAmount>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="main-panel">
+    <div class="table-wrap">
+        <div class="category">
+            <h2>Discount</h2>
+            <a asp-area="Admin" asp-controller="discount" asp-action="Create">Create Discount Amount</a>
+        </div>
+        <table class="table">
+            <thead class="thead-primary">
+                <tr>
+                    <th>Id</th>
+                    <th>Amount(%)</th>
+                    <th>Create</th>
+                    <th>Update</th>
+                    <th>Settings</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (DiscountAmount discount in Model)
+                {
+                    <tr>
+                        <td>@discount.Id</td>
+                        <td>@discount.Amount</td>
+                        <td>@discount.CreatedAt.ToShortDateString()</td>
+                        <td>@discount.UpdateAt.ToShortDateString()</td>
+                        <td>
+                            <div class="div">
+                                <a asp-area="admin" asp-controller="discount" asp-action="delete" asp-route-id="@discount.Id"><i class="fa-solid fa-trash"></i></a>
+                                <a asp-area="admin" asp-controller="discount" asp-action="update" asp-route-id="@discount.Id">
+                                    <i class="fa-solid fa-pen"></i>
+
+                                </a>
+                           
+                            </div>
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

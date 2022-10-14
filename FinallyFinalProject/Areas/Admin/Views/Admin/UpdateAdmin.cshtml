@@ -1,0 +1,49 @@
+﻿@using FinallyFinalProject.HomeVModels
+@model RegisterVModel
+@{
+    ViewData["Title"] = "UpdateAdmin";
+}
+
+<div class="main-panel">
+    <div class="create">
+
+        <div class="category">
+            <h2>Update Admin</h2>
+        </div>
+        <div class="alert alert-danger" asp-validation-summary="ModelOnly"></div>
+        <form method="post" enctype="multipart/form-data" asp-area="Admin" asp-controller="Admin" asp-action="CreateAdmin">
+
+            <label>User Image:</label> <br />
+            <input asp-for="Photo" placeholder="First Name"> <br />
+            <span class="text text-danger" style="color:red" asp-validation-for="Photo"></span>
+
+
+            <label for="">FirstName:</label> <br>
+            <input asp-for="FirstName" placeholder="FirstName"><br>
+            <span class="text-danger" asp-validation-for="FirstName"></span> <br />
+
+            <label for="">LastName:</label> <br>
+            <input asp-for="LastName" placeholder="LastName"><br>
+            <span class="text-danger" asp-validation-for="LastName"></span> <br />
+
+            <label for="">Email:</label> <br>
+            <input asp-for="Email" placeholder="Email"><br>
+            <span class="text-danger" asp-validation-for="Email"></span> <br />
+
+            <label for="">Username:</label> <br>
+            <input asp-for="UserName" placeholder="UserName"><br>
+            <span class="text-danger" asp-validation-for="UserName"></span> <br />
+
+            <label for="">Password:</label> <br>
+            <input asp-for="Password" placeholder="Password"><br>
+            <span class="text-danger" asp-validation-for="Password"></span> <br />
+
+            <label for="">Confirm Password:</label> <br>
+            <input asp-for="ConfirmPassword" placeholder="ConfirmPassword"><br>
+            <span class="text-danger" asp-validation-for="ConfirmPassword"></span> <br />
+
+            <button style="margin-bottom:30px;" type="submit">Update</button>
+        </form>
+    </div>
+</div>
+

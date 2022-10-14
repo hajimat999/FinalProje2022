@@ -1,0 +1,16 @@
+﻿@model Color
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="main-panel">
+    <div class="create">
+        <h2>Create Color</h2>
+        <form method="post">
+            <label for="">Name:</label> <br>
+            <input asp-for="ColorName" placeholder="Name"><br>
+            <span class="text-danger" asp-validation-for="ColorName"></span> <br />
+            <button type="submit">Create</button>
+        </form>
+    </div>
+</div>
+

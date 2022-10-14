@@ -1,0 +1,76 @@
+﻿@inject FinallyFinalProject.Services.LayoutService layoutService
+@{
+    ViewData["Title"] = "Wishlest";
+}
+<section class="header-title">
+    <h1>Wishlist</h1>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><span>/</span></li>
+        <li>Wishlist</li>
+    </ul>
+</section>
+<div class="wishlist-area section-space-y-axis-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form action="javascript:void(0)">
+                    <div class="table-content table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="product_remove">remove</th>
+                                    <th class="product-thumbnail1">Image</th>
+                                    <th class="cart-product-name">Product</th>
+                                    <th class="product-price">Price</th>
+                                    <th class="product-stock-status">Stock Status</th>
+                                    <th>Colors</th>
+                                    <th class="cart_btn">add to cart</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                               
+                                @foreach (Wishlest item in layoutService.GetWishlest())
+                                {
+                                    <tr>
+                                        <td class="product_remove">
+                                            <a asp-controller="wishlest" asp-action="delete" asp-route-id="@item.ProductId">
+                                                <i class="fa-solid fa-xmark"></i>
+                                            </a>
+                                        </td>
+                                        <td class="product-thumbnail">
+                                            <a href="#">
+                                                <img src="~/BrandNewImages/@item.Product.ProductImages.FirstOrDefault(p=>p.IsMain == true)?.Name" alt="Wishlist Thumbnail">
+                                            </a>
+                                        </td>
+                                        <td class="product-name"><a href="#">@item.WishlestItem</a></td>
+                                        <td class="product-price"><span class="amount">$@item.Product.DiscountPrice</span></td>
+                                        <td class="product-stock-status">
+                                            @if(item.Product.ProductColors.FirstOrDefault(p=>p.ProductId == item.ProductId).ProductCount > 0){
+                                                <span class="in-stock">
+                                                  in stock</span>
+                                            }
+                                            else{
+                                                <span class="in-stock" style="color:red;">
+                                                    out stock
+                                                </span>
+                                            }
+                                        </td>
+                                        <td class="product-name"><a href="#">
+                                                @foreach (ProductColor productColor in item.Product.ProductColors)
+                                                {
+                                                    <span>@productColor.Color.ColorName, </span>
+                                                }
+                                        </a></td>
+                                        <td class="cart_btn"><a asp-controller="Detail" asp-action="Plus" asp-route-id="@item.ProductId">add to cart</a></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

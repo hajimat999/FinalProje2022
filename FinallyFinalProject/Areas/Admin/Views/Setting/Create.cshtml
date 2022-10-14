@@ -1,0 +1,20 @@
+﻿@model Setting
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="main-panel">
+    <div class="create">
+        <h2>Create Setting Table</h2>
+        <form method="post" asp-controller="setting" asp-action="create">
+            <label for="">Key:</label> <br>
+            <input asp-for="Key" placeholder="Key"><br>
+            <span class="text-danger" asp-validation-for="Key"></span> <br />
+            <label for="">Value:</label> <br>
+            <input asp-for="Value" placeholder="Value"><br>
+            <span class="text-danger" asp-validation-for="Value"></span> <br />
+            <button type="submit">Create</button>
+        </form>
+    </div>
+</div>
+

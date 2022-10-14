@@ -1,0 +1,399 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
+@using FinallyFinalProject.HomeVModels
+@model ShopVModel
+@{
+    ViewData["Title"] = "Shop";
+    bool result = true;
+    ViewBag.Error = "You Already Rated The Product";
+    if (User.Identity.IsAuthenticated)
+    {        
+
+        result = Model.Product.Ratings.Any(x => x.ProductId==Model.Product.Id && x.ProductId == Model.Product.Id);
+
+    }
+}
+
+<section class="header-title">
+    <h1>Product-Detail</h1>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><span>/</span></li>
+        <li>Product-Detail</li>
+    </ul>
+
+</section>
+<!-- product-detail content -->
+<div class="bg-main">
+    <div class="container">
+        <div class="box">
+            <div class="breadcumb">
+                <a href="./index.html">Home</a>
+                <span><i class='bx bxs-chevrons-right'></i></span>
+                <a href="./products.html">All Products</a>
+                <span><i class='bx bxs-chevrons-right'></i></span>
+                <a href="./product-detail.html">@Model.Product.Model</a>
+            </div>
+        </div>
+        <div class="row product-row">
+            <div class="col-5 col-md-12">
+                <div class="product-img" id="product-img">
+                    <img src="~/BrandNewImages/@Model.Product.ProductImages.FirstOrDefault(p=>p.IsMain==true)?.Name" alt="">
+                </div>
+                <div class="box">
+                    <div class="product-img-list">
+                        @if (Model.Product.ProductImages.Where(p => p.IsMain == false).Count() > 1)
+                        {
+                            @foreach (ProductImage image in Model.Product.ProductImages.Where(p => p.IsMain == false))
+                            {
+                                <div class="product-img-item">
+                                    <img src="~/BrandNewImages/@image.Name" alt="">
+                                </div>
+                            }
+                        }
+                        else{
+                            <div class="product-img-item">
+                                <img src="~/BrandNewImages/@Model.Product.ProductImages.FirstOrDefault(p=>p.IsMain==true)?.Name" alt="">
+                            </div>
+                            <div class="product-img-item">
+                                <img src="~/BrandNewImages/@Model.Product.ProductImages.FirstOrDefault(p=>p.IsMain==false)?.Name" alt="">
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-7 col-md-12">
+                <div class="product-info">
+                    <h1>
+                        @Model.Product.Model
+                    </h1>
+                    <div class="price-box">
+                        <span>$@Model.Product.DiscountPrice</span>
+                    </div>
+                    <div class="product-info-detail">
+                        <span class="product-info-detail-title">Brand:</span>
+                        <a href="#">@Model.Product.Brand.BrandName</a>
+                    </div>
+                    <div class="product-info-detail">
+                        <span class="product-info-detail-title">@Model.Product.Category.CategoryName:</span>
+                        <a href="">Wireless</a>
+                    </div>
+                    <div class="product-info-detail">
+                        <span class="product-info-detail-title">Rated:</span>
+                        <span class="rating">
+                            @{
+                                int starCount = 5 - Model.Product.Rating;
+                            }
+                            @for (int i = 0; i < Model.Product.Rating; i++)
+                            {
+                                <i class="fa-solid fa-star staron"></i>
+                            }
+                            @for (int i = 0; i < starCount; i++)
+                            {
+                                <i class="fa-regular fa-star"></i>
+                            }
+                        </span>
+             
+                        
+            
+                          @if(Model.Product.Ratings == null){
+                            <span class="rew">(0)</span>
+                        }
+
+                        else{
+                            <span class="rew">(@(Model.Product.Ratings.Count()))</span>
+                            
+                        }
+                            
+                    </div>
+
+                    <p class="product-description">
+                       @Model.Product.Description
+                    </p>
+                    <form method="post" asp-controller="Detail" asp-action="Shop">
+                        <div style="align-items:normal;" class="product-info-detail333">
+                            <span class="product-info-detail-title">Colors:</span>
+
+                            <div>
+                            
+                                @foreach (ProductColor productColor in Model.Product.ProductColors)
+                                {
+
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" asp-for="@productColor.ProductId" value="@productColor.ColorId" class="custom-control-input" id="color-1">
+                                        <label class="custom-control-label" for="color-1">@productColor.Color.ColorName</label> <br>
+                                        <input type="hidden" asp-for="@Model.Product.Id"> <br>
+
+
+
+                                    </div>
+
+                                }
+
+
+                                
+                            </div>
+                            
+
+
+                        </div>
+                        <div class="alert alert-danger" style="color:red; margin-bottom:15px;" asp-validation-summary="ModelOnly"></div>
+                        <div class="product-quantity-wrapper">
+                            <span class="product-quantity-btn">
+                                <a id="Minus" asp-controller="Detail" asp-action="Minus" asp-route-id="@Model.Product.Id"><i class='bx bx-minus'></i></a>
+                            </span>
+                            @{
+                                int quantity = 0;
+                            }
+
+                            @if (Model.BasketItems.Count()==0)
+                            {
+                                <span class="product-quantity">@quantity</span>
+                            }
+                            else
+                            {
+                                <span class="product-quantity">@Model.BasketItems.FirstOrDefault().Quantity</span>
+                            }
+
+                            <span class="product-quantity-btn">
+                                <a id="Plus" asp-controller="Detail" asp-action="plus" asp-route-id="@Model.Product.Id"><i class='bx bx-plus'></i></a>
+                            </span>
+                        </div>
+                        <div>
+                            <button type="submit" style="margin-top:30px;" class="btn-flat btn-hover qaz">Add to cart</button>
+                            <button asp-controller="Wishlest" asp-action="Index" asp-route-id="@Model.Product.Id"  style="margin-top:30px;" class="btn-flat btn-hover qaz">Add to wishlist</button>
+                        </div>
+                        
+
+                    </form>
+
+                    
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-section">
+           
+            <a class="a1" href="#">Description</a>
+               @if(Model.Product.Comments !=null){
+                    <a class="a1" href="#">
+                    Comment(@(Model.Product.Comments.Count()))
+                    </a>
+               }
+               else{
+                <a class="a1" href="#">
+                    Comment(0)
+                </a>
+               }
+
+            
+            <a class="a1" href="#">Information</a>
+        </div>
+        <div class="content-section">
+            <div class="box">
+                <div class="product-detail-description">
+                    <!-- <button class="btn-flat btn-hover btn-view-description" id="view-all-description">
+                        View all
+                    </button> -->
+                    <div class="product-detail-description-content">
+                        <p class="pqa">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit laudantium obcaecati odit dolorem, doloremque accusamus esse neque ipsa dignissimos saepe quisquam tempore perferendis deserunt sapiente! Recusandae illum totam earum ratione.
+                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aliquam incidunt maxime rerum reprehenderit voluptas asperiores ipsam quas consequuntur maiores, at odit obcaecati vero sunt! Reiciendis aperiam perferendis consequuntur odio quas. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut quaerat eum veniam doloremque nihil repudiandae odio ratione culpa libero tempora. Expedita, quo molestias. Minus illo quis dignissimos aliquid sapiente error!
+                        </p>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis accusantium officia, quae fuga in exercitationem aliquam labore ex doloribus repellendus beatae facilis ipsam. Veritatis vero obcaecati iste atque aspernatur ducimus.
+                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repellat quam praesentium id sit amet magnam ad, dolorum, cumque iste optio itaque expedita eius similique, ab adipisci dicta. Quod, quibusdam quas. Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, in corrupti ipsam sint error possimus commodi incidunt suscipit sit voluptatum quibusdam enim eligendi animi deserunt recusandae earum natus voluptas blanditiis?
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-section">
+            <div class="box">
+                <div>
+                   @if(Model.Product.Comments.Count()!=0)
+                   {
+                        foreach (Comment comment in Model.Product.Comments.OrderByDescending(c => c.Id).Take(4))
+                        {
+                            if(comment.User != null){
+                                <div class="user-rate">
+                                    <div class="user-info">
+                                        <div class="user-avt">
+                                            <img src="~/Admin/UserImages/@comment.User.Image" alt="">
+                                        </div>
+                                        <div class="user-name">
+                                            <span style="color:gray;" class="name">@comment.User.UserName</span>
+                                            <div class="user-rate-content">
+                                                @comment.Text
+                                            </div>
+                                        </div>
+                                    </div>
+                                   
+
+                                </div>
+                            }
+                            
+                           
+
+                        }
+                   }
+                    else
+                    {
+                        <h1 class="h11" style="color:red; text-align:center;">No Comment</h1>
+                    }
+                  
+                    
+                 
+                    <div class="box">
+                        <ul class="pagination">
+                            <li><a href="#"><i class='bx bxs-chevron-left'></i></a></li>
+                            <li><a href="#" class="active">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                            <li><a href="#"><i class='bx bxs-chevron-right'></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <h1 class="h11">Leave A Comment</h1>
+            
+            <form class="comment" method="post" asp-controller="Detail" asp-action="Shop">
+                <ul class="form-cover">
+                    <li class="inp-text"><textarea asp-for="@Model.Comment.Text"  placeholder="Message"></textarea></li> <br />
+                    <span class="text-danger" style="color:red;" asp-validation-for="@Model.Comment.Text"></span>
+                    
+                </ul>
+                <div class="star_rating">
+                    
+                             
+                    <a class="star" style="color:yellow;" data-id="1" asp-controller="detail" asp-action="addrate" asp-all-route-data="@(new Dictionary<string, string>{{ "Ids[0]", Model.Product.Id.ToString() },{ "Ids[1]", "1" } })" style="color:black;">&#9734;</a>
+                  
+                    <a class="star" style="color:yellow;" data-id="2" asp-controller="detail" asp-action="addrate" asp-all-route-data="@(new Dictionary<string, string>{{ "Ids[0]", Model.Product.Id.ToString() },{ "Ids[1]", "2" } })" style="color:black;">&#9734;</a>
+
+                    
+
+                    <a class="star" style="color:yellow;" data-id="3" asp-controller="detail" asp-action="addrate" asp-all-route-data="@(new Dictionary<string, string>{{ "Ids[0]", Model.Product.Id.ToString() },{ "Ids[1]", "3" } })" style="color:black;">&#9734;</a>
+
+
+                    <a class="star" style="color:yellow;" data-id="4" asp-controller="detail" asp-action="addrate" asp-all-route-data="@(new Dictionary<string, string>{{ "Ids[0]", Model.Product.Id.ToString() },{ "Ids[1]", "4" } })" style="color:black;">&#9734;</a>
+
+
+                    <a class="star" style="color:yellow;" data-id="5" asp-controller="detail" asp-action="addrate" asp-all-route-data="@(new Dictionary<string, string>{{ "Ids[0]", Model.Product.Id.ToString() },{ "Ids[1]", "5" } })" style="color:black;">&#9734;</a>
+
+                    @if(result == true){
+                        <div style="color:red;">@ViewBag.Error</div>
+                    }
+                   
+                </div>
+                <input  type="hidden" asp-for="@Model.Product.Id"/>
+                
+                <div class="checkbox">
+                    <div class="checkbox999">
+
+                        <input type="checkbox" asp-for="@Model.Comment.Status" />
+                        
+                        <p>By using this form you agree with the storage and handling of your data by this website.</p>
+
+                        <span style="color:red; width:200%; margin: auto;" asp-validation-for="@Model.Comment.Status" ></span>
+
+                        
+                    </div>
+                   
+                </div>
+
+                <div class="button">
+                    <button type="submit" class="btn">Submit Comment</button>
+
+                </div>
+
+            </form>
+            
+            
+        </div>
+        <div class="content-section">
+            <div class="tab-pane" id="information" role="tabpanel" aria-labelledby="information-tab">
+                <div class="product-information-body">
+                    <h4 class="title">Shipping</h4>
+                    <p class="short-desc mb-4">
+                        @Model.Product.Information.Shipping
+                    </p>
+                    <h4 class="title">About Return Request</h4>
+                    <p class="short-desc mb-4">
+                        @Model.Product.Information.ReturnRequest
+                    </p>
+                    <h4 class="title">Guarantee</h4>
+                    <p class="short-desc mb-0">
+                        @Model.Product.Information.Guarantee
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Related product</h2>
+                </div>
+                <div class="row" id="latest-products">
+                    
+                    @foreach (Product item in Model.Products.Take(3))
+                    {
+                        {
+                            int categoryId = item.CategoryId;
+                        }
+                        <div class="col-3 col-md-6 col-sm-12">
+                            <div class="product-card">
+                                <div class="product-card-img">
+                                    <img src="~/BrandNewImages/@item.ProductImages.FirstOrDefault(pi=>pi.IsMain == true)?.Name" alt="">
+                                    <img src="~/BrandNewImages/@item.ProductImages.FirstOrDefault(pi=>pi.IsMain == null)?.Name" alt="">
+                                </div>
+                                <div class="product-card-info">
+                                    <div class="product-btn">
+                                        <a asp-controller ="detail" asp-action="shop" asp-route-id="@item.Id" class="btn-flat btn-hover btn-shop-now">shop now</a>
+                                        <a asp-controller="detail" asp-action="plus" asp-route-id="@item.Id" class="btn-flat btn-hover btn-cart-add">
+                                            <i class='bx bxs-cart-add'></i>
+                                        </a>
+                                        <a asp-controller="detail" asp-action="shop" asp-route-id="@item.Id" class="btn-flat btn-hover btn-cart-add">
+                                            <i class='bx bxs-heart'></i>
+                                        </a>
+                                    </div>
+                                    <div class="product-card-name">
+                                        @item.Model
+                                    </div>
+                                    <div class="product-card-name">
+                                        <span class="rating">
+                                            @{
+                                                int starCount2 = 5 - item.Rating;
+                                            }
+                                            @for (int i = 0; i < item.Rating; i++)
+                                            {
+                                                <i class="fa-solid fa-star staron"></i>
+                                            }
+                                            @for (int i = 0; i < starCount2; i++)
+                                            {
+                                                <i class="fa-regular fa-star"></i>
+                                            }
+                                        </span>
+                                    </div>
+                                    <div class="product-card-price">
+                                        <span><del>$@item.Price</del></span>
+                                        <span class="curr-price">$@item.DiscountPrice</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+                <div class="section-footer">
+                    <a asp-controller="shop" asp-action="shop" asp-all-route-data="@(new Dictionary<string, string>{{ "Ids[0]", Model.Product.CategoryId.ToString()},{ "Ids[1]", "0" },{ "Ids[2]", "0" }})" class=" btn-flat btn-hover">view all</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+

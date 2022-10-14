@@ -1,0 +1,50 @@
+﻿@model List<Brand>
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+
+<div class="main-panel">
+    <div class="table-wrap">
+        <div class="category">
+            <h2>Brand</h2>
+            <a asp-area="Admin" asp-controller="Brand" asp-action="Create">Create Brand</a>
+        </div>
+        <table class="table">
+            <thead class="thead-primary">
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Create</th>
+                    <th>Update</th>
+                    <th>Settings</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (Brand brand in Model)
+                {
+                    <tr>
+                        <td>@brand.Id</td>
+                        <td>@brand.BrandName</td>
+                        <td>@brand.CreatedAt.ToShortDateString()</td>
+                        <td>@brand.UpdateAt.ToShortDateString()</td>
+                        <td>
+                            <div class="div">
+                                <a asp-area="admin" asp-controller="Brand" asp-action="delete" asp-route-id="@brand.Id"><i class="fa-solid fa-trash"></i></a>
+                                <a asp-area="admin" asp-controller="Brand" asp-action="update" asp-route-id="@brand.Id">
+                                    <i class="fa-solid fa-pen"></i>
+
+                                </a>
+                           
+                            </div>
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

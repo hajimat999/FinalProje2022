@@ -1,0 +1,17 @@
+﻿@model DiscountAmount
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="main-panel">
+    <div class="create">
+        <h2>Create Discount Amount</h2>
+        <form method="post">
+            <label for="">Name:</label> <br>
+            <input asp-for="Amount" placeholder="Name"><br>
+            <span class="text-danger" asp-validation-for="Amount"></span> <br />
+            <button type="submit">Create</button>
+        </form>
+    </div>
+</div>
+

@@ -1,0 +1,248 @@
+﻿@inject FinallyFinalProject.Services.LayoutService layoutService
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eshop</title>
+    <!-- google font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,900&display=swap" rel="stylesheet">
+    <!-- boxicons -->
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+    <!-- app css -->
+    <link rel="stylesheet" href="~/css/grid.css">
+    <link rel="stylesheet" href="~/css/app.css">
+
+</head>
+
+<body>
+
+    <!-- header -->
+    <header>
+        <!-- mobile menu -->
+        <div class="mobile-menu bg-second">
+            <a href="#" class="mb-logo">E-Shop</a>
+            <span class="mb-menu-toggle" id="mb-menu-toggle">
+                <i class='bx bx-menu'></i>
+            </span>
+        </div>
+        <!-- end mobile menu -->
+        <!-- main header -->
+        <div class="header-wrapper" id="header-wrapper">
+            <span class="mb-menu-toggle mb-menu-close" id="mb-menu-close">
+                <i class='bx bx-x'></i>
+            </span>
+            <div class="bg-second">
+                <div class="top-header container">
+                    <ul class="devided">
+                        <li>
+                            <i class="fa fa-phone"></i>
+                            <a href="tel:+912345687">+9123 456 87</a>
+                        </li>
+                        <li class="li">
+                            <i class="fa fa-envelope"></i>
+                            <a href="mailto:eshop@gmail.com">eshop@mail.ru</a>
+                        </li>
+                    </ul>
+                    <ul class="devided">
+                        <li style="color:#FFD910; margin-right:0; padding-right:0;">@layoutService.GetSettings().FirstOrDefault(s=>s.Key.Trim().ToLower() == "hello")?.Value</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bg-main">
+                <div class="mid-header container">
+                    @if(layoutService.GetSettings().Count()>0){
+                        <a href="#" class="logo">@layoutService.GetSettings().FirstOrDefault(s=>s.Key.Trim().ToLower() == "logo")?.Value</a>
+                    }
+                   
+                    <div class="search">
+                        <input type="text" placeholder="Search">
+                        <i class='bx bx-search-alt'></i>
+                    </div>
+                    <ul class="user-menu">
+                        <li>
+                            <a class="header-like" asp-controller="wishlest" asp-action="index">
+                                <i class="@layoutService.GetSettings().FirstOrDefault(s=>s.Key.Trim().ToLower() == "hearticon")?.Value" aria-hidden="true">
+                                    <span class="span999">@(layoutService.GetWishlest() != null ? layoutService.GetWishlest().Count.ToString() : "0")</span>
+                                </i><span></span>
+                            </a>
+                        </li>
+  
+                        
+                        @if(!User.Identity.IsAuthenticated){
+                            <li class="dropdown333">
+                                <a class="header-user" ><i class="fa fa-user" aria-hidden="true"></i></a>
+                                <div class="dropdown-content333">
+                                    <a asp-controller="account" asp-action="login">Login</a>
+                                    <a asp-controller="account" asp-action="register">Register</a>
+                                </div>
+                            </li>
+                        }
+                        else{
+                            <li class="dropdown333">
+                                <a asp-controller="account" asp-action="logout" class="header-user" ><i class="fa-solid fa-right-from-bracket"></i></a>
+                            
+                        </li>
+                        }
+                        <li>
+                            <a id="header-cart" href="#">
+                                <i class="fa fa-shopping-cart" aria-hidden="true">
+                                    <span class="span999">@(layoutService.Getbasket() != null ? layoutService.Getbasket().BasketItems.Count.ToString() : "0")</span>
+                                </i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div id="drop">
+                    <div class="drop1">
+                        <h4>Shopping Cart</h4>
+                        <a href="#" class="button-close"><i class="fa-solid fa-xmark"></i></a>
+                    </div>
+                    <ul>
+                    @if(layoutService.Getbasket() != null){
+                            @foreach (BasketItem basketItem in layoutService.Getbasket().BasketItems.Take(2))
+                            {
+                                <li class="minicart-product">
+                                    <div class="img-full">
+                                        <a href="single-product-variable.html" class="product-item_img">
+                                            <img class="img-full" src="~/BrandNewImages/@basketItem.Product.ProductImages.FirstOrDefault(p=>p.IsMain==true)?.Name" alt="Product Image">
+                                        </a>
+                                    </div>
+                                    <div class="product-item_content">
+                                        <a class="product-item_title" href="single-product-variable.html">@basketItem.Product.Model</a>
+                                        <span class="product-item_quantity">@basketItem.Quantity x $@basketItem.Price</span>
+                                        <span class="product-item_quantity">@basketItem.Color.ColorName </span>
+                                    </div>
+                                    <div>
+                                        <a class="product-item_remove" asp-controller="Detail" asp-action="delete" asp-route-id="@basketItem.Id"><i class="fa-solid fa-xmark"></i></a>
+                                    </div>
+                                </li>
+
+                            }
+                    }
+                       
+
+                        
+                    </ul>
+                    
+                    <div class="minicart1">
+                        <span>Subtotal</span>
+                        @{
+                            int count = 0;
+                        }
+                        <span class="ammount">$@(layoutService.Getbasket() == null ? count : layoutService.Getbasket().TotalPrice)</span>
+                    </div>
+
+                    <div class="drop4">
+                        <a asp-controller="cartcontroller1" asp-action="index" class="btn btn-dark">View Cart</a><br>
+                        <a asp-controller="order" asp-action="index" class="btn btn-dark">Checkout</a>
+                    </div>
+
+                </div>
+            </div>
+            <!-- end mid header -->
+            <!-- bottom header -->
+            <div class="bg-second">
+                <div class="bottom-header container">
+                    <ul class="main-menu">
+                        <li><a asp-controller="home" asp-action="index">Home</a></li>
+                        <!-- mega menu -->
+                        <li>
+                            <a asp-controller="shop" asp-action="shop">Shop</a>
+                        </li>
+                        <!-- end mega menu -->
+                        <li><a asp-controller="blog" asp-action="index">blog</a></li>
+                        <li><a asp-controller="contact" asp-action="index">contact</a></li>
+                        <li><a asp-controller="aboutcontroller1" asp-action="index">About Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- end bottom header -->
+        </div>
+        <!-- end main header -->
+    </header>
+    <!-- end header -->
+    <main>
+        @RenderBody()
+    </main>        
+    <footer class="bg-second">
+        <div class="container">
+            <div class="row">
+                <div class="col-3 col-md-6">
+                    <h3 class="footer-head">Products</h3>
+                    <ul class="menu">
+                        <li><a href="#">Help center</a></li>
+                        <li><a href="#">Contact us</a></li>
+                        <li><a href="#">product help</a></li>
+                        <li><a href="#">warranty</a></li>
+                        <li><a href="#">order status</a></li>
+                    </ul>
+                </div>
+                <div class="col-3 col-md-6">
+                    <h3 class="footer-head">services</h3>
+                    <ul class="menu">
+                        <li><a href="#">Help center</a></li>
+                        <li><a href="#">Contact us</a></li>
+                        <li><a href="#">product help</a></li>
+                        <li><a href="#">warranty</a></li>
+                        <li><a href="#">order status</a></li>
+                    </ul>
+                </div>
+                <div class="col-3 col-md-6">
+                    <h3 class="footer-head">support</h3>
+                    <ul class="menu">
+                        <li><a href="#">Help center</a></li>
+                        <li><a href="#">Contact us</a></li>
+                        <li><a href="#">product help</a></li>
+                        <li><a href="#">warranty</a></li>
+                        <li><a href="#">order status</a></li>
+                    </ul>
+                </div>
+                <div class="col-3 col-md-6 col-sm-12">
+                    <div class="contact">
+                        <h3 class="contact-header">
+                            Eshop
+                        </h3>
+                        <ul class="contact-socials">
+                            <li>
+                                <a href="#">
+                                    <i class='bx bxl-facebook-circle'></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class='bx bxl-instagram-alt'></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class='bx bxl-youtube'></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class='bx bxl-twitter'></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="subscribe">
+                        <input type="email" placeholder="ENTER YOUR EMAIL">
+                        <button>subscribe</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- end footer -->
+    <!-- app js -->
+    <script src="~/js/app.js"></script>
+    <script src="~/js/index.js"></script>
+    <script src="~/js/products.js"></script>
+    <script src="~/js/product-detail.js"></script>
+</body>
+</html>

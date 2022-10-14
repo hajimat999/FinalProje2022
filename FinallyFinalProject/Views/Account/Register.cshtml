@@ -1,0 +1,59 @@
+﻿@using FinallyFinalProject.HomeVModels
+@model RegisterVModel
+<section class="header-title">
+    <h1>Register</h1>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><span>/</span></li>
+        <li>Register</li>
+    </ul>
+
+</section>
+<section id="eleven">
+    <div class="register">
+        <form method="post" enctype="multipart/form-data">
+            <h4>Register</h4>
+            <div class="row">
+                <div class="col-md-12">
+                    <label>First Name</label>
+                    <input asp-for="Photo" placeholder="First Name"> <br />
+                    <span class="text text-danger" style="color:red" asp-validation-for="Photo"></span>
+                </div>
+                <div class="col-md-6">
+                    <label>First Name</label>
+                    <input asp-for="FirstName" placeholder="First Name"> <br />
+                    <span class="text text-danger" style="color:red" asp-validation-for="FirstName"></span>
+                </div>
+                <div class="col-md-6">
+                    <label>Last Name</label>
+                    <input asp-for="LastName" placeholder="Last Name"><br />
+                    <span class="text text-danger" style="color:red" asp-validation-for="LastName"></span>
+                </div>
+                <div class="col-md-12">
+                    <label>Email Address*</label>
+                    <input asp-for="Email" placeholder="Email Address"><br />
+                    <span class="text text-danger" style="color:red" asp-validation-for="Email"></span>
+                </div>
+                <div class="col-md-12">
+                    <label>Username*</label>
+                    <input asp-for="UserName" placeholder="Username"><br />
+                    <span class="text text-danger" style="color:red" asp-validation-for="UserName"></span>
+                </div>
+                <div class="col-md-6">
+                    <label>Password</label>
+                    <input asp-for="Password" placeholder="Password"> <br />
+                    <span class="text text-danger" style="color:red" asp-validation-for="Password"></span>
+                </div>
+                <div class="col-md-6">
+                    <label>Confirm Password</label>
+                    <input asp-for="ConfirmPassword" placeholder="Confirm Password"> <br />
+                    <span class="text text-danger" style="color:red" asp-validation-for="ConfirmPassword"></span>
+                </div>
+            </div>
+            <div class="bat">
+                <button type="submit">Register</button>
+            </div>
+        </form>
+    </div>
+</section>
+<div class="alert alert-danger" style="color:red; text-align:center" asp-validation-summary="ModelOnly"></div>

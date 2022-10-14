@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="main-panel">
+    <div class="table-wrap">
+        <div class="category">
+            <h2>Setting</h2>
+            <a asp-area="Admin" asp-controller="Setting" asp-action="Create">Create Setting</a>
+        </div>
+        <table class="table">
+            <thead class="thead-primary">
+                <tr>
+                    <th>Key</th>
+                    <th>Value</th>
+                    <th>Create</th>                  
+                    <th>Settings</th>
+                </tr>
+            </thead>
+            
+            @foreach (Setting item in Model)
+            {
+                if (item.Key.Trim().ToLower() == "logo"){
+                    <tbody>
+                        <tr>
+                            <td>@item.Key</td>
+                            <td>@item.Value</td>
+                            <td>@item.CreatedAt.ToShortDateString()</td>
+                            <td>
+                                <div class="div">
+                                    <a asp-area="admin" asp-controller="setting" asp-action="delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash"></i></a>
+
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                }
+                if (item.Key.Trim().ToLower() == "hearticon")
+                {
+                    <tbody>
+                        <tr>
+                            <td>@item.Key</td>
+                            <td>@item.Value</td>
+                            <td>@item.CreatedAt.ToShortDateString()</td>
+                            <td>
+                                <div class="div">
+                                    <a asp-area="admin" asp-controller="setting" asp-action="delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash"></i></a>
+
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                }
+                if (item.Key.Trim().ToLower() == "hello")
+                {
+                    <tbody>
+                        <tr>
+                            <td>@item.Key</td>
+                            <td>@item.Value</td>
+                            <td>@item.CreatedAt.ToShortDateString()</td>
+                            <td>
+                                <div class="div">
+                                    <a asp-area="admin" asp-controller="setting" asp-action="delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash"></i></a>
+
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                }
+            }
+        </table>
+    </div>
+</div>
+

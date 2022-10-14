@@ -1,0 +1,51 @@
+﻿@model List<AppUser>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="main-panel">
+    <div class="table-wrap">
+        <div class="category">
+            <h2>Admins</h2>
+            <a asp-area="Admin" asp-controller="admin" asp-action="createadmin">Create Admin</a>
+
+        </div>
+        <table class="table">
+            <thead class="thead-primary">
+                <tr>
+                    <th>User Image</th>
+                    <th>Username</th>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Email</th>
+                    <th>Settings</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (AppUser user in Model)
+                {
+                    <tr>
+                        <td><img style="width:170px; height:170px; object-fit:contain;" src="~/Admin/AdminImages/@user.Image"> </td>
+                        <td>@user.UserName</td>
+                        <td>@user.FirstName</td>
+                        <td>@user.LastName</td>
+                        <td>@user.Email</td>
+                        
+
+
+                        <td>
+                            <div class="div">
+                                <a asp-area="admin" asp-controller="Admin" asp-action="delete" asp-route-id="@user.Id"><i class="fa-solid fa-trash"></i></a>
+
+                                 <a asp-area="admin" asp-controller="admin" asp-action="updateadmin" asp-route-id="@user.Id"><i class="fa-solid fa-pen"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

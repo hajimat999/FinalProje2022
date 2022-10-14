@@ -1,0 +1,61 @@
+﻿@model List<Order>
+@{
+    ViewData["Title"] = "Archive";
+}
+
+<div class="main-panel">
+    <div class="table-wrap">
+        <div class="category">
+            <h2>Archive Orders</h2>
+        </div>
+        <table class="table">
+            <thead class="thead-primary">
+                <tr>
+                    <th>Username</th>
+                    <th>Address</th>
+                    <th>TotalPrice</th>
+                    <th>Date</th>
+                    <th>Settings</th>
+                </tr>
+            </thead>
+            <tbody>
+             
+                    @foreach (Order order in Model)
+                    {
+                        if (order.Deliver == true)
+                        {
+                         
+                            
+                                <tr>
+                                    <td>@order.User.UserName</td>
+                                    <td>
+                                        @order.Country,
+                                        @order.Town,
+                                        @order.StreetAddress,
+                                        @order.ApartmentAddress,
+                                    </td>
+                                    <td>@order.TotalPrice</td>
+                                    <td>@order.CreatedAt.ToShortDateString()</td>
+
+                                 <td>
+                                  <div class="div">
+                                    <a asp-area="admin" asp-controller="order" asp-action="delete" asp-route-id="@order.Id"><i class="fa-solid fa-trash"></i></a>
+                                   
+
+                                  </div>
+                                </tr>
+                            
+
+
+                        }
+
+                    }
+ 
+             
+            
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+

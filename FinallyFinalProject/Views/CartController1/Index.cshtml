@@ -1,0 +1,81 @@
+﻿@inject FinallyFinalProject.Services.LayoutService layoutService
+@{
+    ViewData["Title"] = "Index";
+}
+
+<section class="header-title">
+    <h1>Cart</h1>
+    <ul>
+        <li><a href="index.html">Cart</a></li>
+        <li><span></span></li>
+        <li></li>
+    </ul>
+
+</section>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 cart">
+            <form action="">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="product_remove">remove</th>
+                            <th class="product-thumbnail1">images</th>
+                            <th class="cart-product-name">Product</th>
+                            <th class="product-price">Price</th>
+                            <th class="product-quantity">Quantity</th>
+                            <th class="product-subtotal">Color</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       
+
+
+                        @if (layoutService.Getbasket() != null)
+                        {
+                            @foreach (BasketItem basketItem in layoutService.Getbasket().BasketItems)
+                            {
+                                <tr>
+                                    <td class="product_remove">
+                                        <a asp-controller="detail" asp-action="delete" asp-route-id="@basketItem.Id">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </a>
+                                    </td>
+                                    <td class="product-thumbnail">
+                                        <a href="#">
+                                            <img src="~/BrandNewImages/@basketItem.Product.ProductImages.FirstOrDefault(p=>p.IsMain==true)?.Name" alt="Cart Thumbnail">
+                                        </a>
+                                    </td>
+                                    <td class="product-name"><a href="#">@basketItem.Product.Model</a></td>
+                                    <td class="product-price"><span class="amount">$@basketItem.Price</span></td>
+                                    <td class="quantity">
+                                        @basketItem.Quantity
+                                        
+                                    </td>
+                                    <td class="product-subtotal"><span class="amount">@basketItem.Color.ColorName</span></td>
+                               </tr>
+
+                            }
+                        }
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-md-5 ml-auto">
+                        <div class="cart-page-total">
+                            <h2>Cart totals</h2>
+                            @{
+                                int count = 0;
+                            }
+                            <ul>
+                                <li>Subtotal <span>$@(layoutService.Getbasket() == null ? count : layoutService.Getbasket().TotalPrice)</span></li>
+                                
+                            </ul>
+                            <a href="#">Proceed to checkout</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

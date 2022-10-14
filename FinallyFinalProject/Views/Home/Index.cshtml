@@ -1,0 +1,278 @@
+﻿@using FinallyFinalProject.HomeVModels
+@using FinallyFinalProject.Models
+
+@model HomeVM
+@{
+    ViewData["Title"] = "Home";
+}
+<section class="header-title">
+    <h1>Home</h1>
+    
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><span></span></li>
+        <li></li>
+    </ul>
+
+</section>
+
+<div class="container">
+    <div class="hero">
+       
+        <div class="slider">
+            @{
+                int quantity = 0;
+              
+            }
+            @foreach (Slider slider in Model.Sliders)
+            {
+                if(quantity==0){
+                    <div class="slide active">
+                        <div class="info">
+                            <div class="info-content">
+                                <h3 class="top-down">
+                                    @slider.Title1
+                                </h3>
+                                <h2 class="top-down trans-delay-0-2">
+                                    @slider.Title2
+                                </h2>
+                                <p class="top-down trans-delay-0-4">
+                                    @slider.Description
+                                </p>
+                                <div class="top-down trans-delay-0-6">
+                                    <button type="button" onclick="location.href='@slider.ButtonUrl'" class="btn-flat btn-hover">
+                                        <span>shop now</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="img top-down">
+                            <img src="~/Admin/NewImages/@slider.Image" alt="" />
+
+                        </div>
+                    </div>
+                }
+                else{
+                    <div class="slide">
+                        <div class="info">
+                            <div class="info-content">
+                                <h3 class="top-down">
+                                    @slider.Title1
+                                </h3>
+                                <h2 class="top-down trans-delay-0-2">
+                                    @slider.Title2
+                                </h2>
+                                <p class="top-down trans-delay-0-4">
+                                    @slider.Description
+                                </p>
+                                <div class="top-down trans-delay-0-6">
+                                    <button onclick="location.href='@slider.ButtonUrl'" class="btn-flat btn-hover">
+                                        <span>shop now</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="img top-down">
+                            <img src="~/Admin/NewImages/@slider.Image" alt="" />
+
+                        </div>
+                    </div>
+                }
+                quantity++;
+                
+            }
+            <button class="slide-controll slide-next">
+                <i class='bx bxs-chevron-right'></i>
+            </button>
+            <button class="slide-controll slide-prev">
+                <i class='bx bxs-chevron-left'></i>
+            </button>
+            <!-- end slider controller -->
+        </div>
+    </div>
+</div>
+<!-- end hero section -->
+<!-- promotion section -->
+<div class="promotion">
+    <div class="container3">
+        <div class="row">
+            <div class="col-4 col-md-12 col-sm-12">
+                <div class="promotion-box">
+                    <div class="text">
+                        <h3>Headphone & Earbuds</h3>
+                        <button class="btn-flat btn-hover"><span>shop collection</span></button>
+                    </div>
+                    <img src="~/images/JBLHorizon_001_dvHAMaster.png" alt="">
+                </div>
+            </div>
+            <div class="col-4 col-md-12 col-sm-12">
+                <div class="promotion-box">
+                    <div class="text">
+                        <h3>JBL Quantum Series</h3>
+                        <button class="btn-flat btn-hover"><span>shop collection</span></button>
+                    </div>
+                    <img src="~/images/kisspng-beats-electronics-headphones-apple-beats-studio-red-headphones.png" alt="">
+                </div>
+            </div>
+            <div class="col-4 col-md-12 col-sm-12">
+                <div class="promotion-box">
+                    <div class="text">
+                        <h3>True Wireless Earbuds</h3>
+                        <button class="btn-flat btn-hover"><span>shop collection</span></button>
+                    </div>
+                    <img src="~/images/JBL_TUNE220TWS_ProductImage_Pink_ChargingCaseOpen.png" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end promotion section -->
+<!-- product list -->
+<div class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Latest product</h2>
+        </div>
+        <div class="row" id="latest-products">
+            @foreach (Product product in Model.Products.OrderByDescending(p=>p.Id).Take(8))
+            {
+                <div class="col-3 col-md-6 col-sm-12">
+                    <div class="product-card">
+                        <div class="product-card-img">
+                            <img src="~/BrandNewImages/@product.ProductImages.FirstOrDefault(pi=>pi.IsMain==true)?.Name" alt="">
+                            <img src="~/BrandNewImages/@product.ProductImages.FirstOrDefault(pi=>pi.IsMain==null)?.Name" alt="">
+                        </div>
+                        <div class="product-card-info">
+                            <div class="product-btn">
+                                <a class="btn-flat btn-hover btn-shop-now" asp-controller="detail" asp-action="shop" asp-route-id="@product.Id">shop now</a>
+                                <a asp-controller="detail" asp-action="plus" asp-route-id="@product.Id" class="btn-flat btn-hover btn-cart-add">
+                                    <i class='bx bxs-cart-add'></i>
+                                </a>
+                                <a asp-controller="wishlest" asp-action="index" asp-route-id="@product.Id" class="btn-flat btn-hover btn-cart-add">
+                                    <i class='bx bxs-heart'></i>
+                                </a>
+                            </div>
+                            <div class="product-card-name">
+                                @product.Model
+                            </div>
+                            <div class="product-card-price">
+                                <span><del>$@product.Price</del></span>
+                                <span class="curr-price">$@product.DiscountPrice</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+        <div class="section-footer">
+            <a asp-controller="detail" asp-action="shop" class="btn-flat btn-hover">view all</a>
+        </div>
+    </div>
+</div>
+<!-- end product list -->
+<!-- special product -->
+<div class="bg-second">
+    <div class="section container">
+        <div class="row">
+            <div class="col-4 col-md-4">
+                <div class="sp-item-img">
+                    <img src="~/images/kisspng-beats-electronics-headphones-apple-beats-studio-red-headphones.png" alt="">
+                </div>
+            </div>
+            <div class="col-7 col-md-8">
+                <div class="sp-item-info">
+                    <div class="sp-item-name">JBL TUNE 750TNC</div>
+                    <p class="sp-item-description">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore dignissimos itaque et eaque quod harum vero autem? Reprehenderit enim non voluptate! Qui provident modi est non eius ratione, debitis iure.
+                    </p>
+                    <button class="btn-flat btn-hover">shop now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end special product -->
+<!-- product list -->
+<div class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2>best selling</h2>
+        </div>
+        <div class="row" id="best-products">
+            @foreach (Product product1 in Model.Products.OrderByDescending(p=>p.OrderCount).Take(8))
+            {
+                <div class="col-3 col-md-6 col-sm-12">
+                    <div class="product-card">
+                        <div class="product-card-img">
+                            <img src="~/BrandNewImages/@product1.ProductImages.FirstOrDefault(pi=>pi.IsMain==true)?.Name" alt="">
+                            <img src="~/BrandNewImages/@product1.ProductImages.FirstOrDefault(pi=>pi.IsMain==null)?.Name" alt="">
+                        </div>
+                        <div class="product-card-info">
+                            <div class="product-btn">
+                                <a class="btn-flat btn-hover btn-shop-now" asp-controller="detail" asp-action="shop" asp-route-id="@product1.Id">shop now</a>
+                                <a asp-controller="detail" asp-action="plus" asp-route-id="@product1.Id" class="btn-flat btn-hover btn-cart-add">
+                                    <i class='bx bxs-cart-add'></i>
+                                </a>
+                                <a asp-controller="wishlest" asp-action="index" asp-route-id="@product1.Id" class="btn-flat btn-hover btn-cart-add">
+                                    <i class='bx bxs-heart'></i>
+                                </a>
+                            </div>
+                            <div class="product-card-name">
+                                @product1.Model
+                            </div>
+                            <div class="product-card-price">
+                                <span><del>$@product1.Price</del></span>
+                                <span class="curr-price">$@product1.DiscountPrice</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="section-footer">
+            <a asp-controller="shop" asp-action="shop" class="btn-flat btn-hover">view all</a>
+        </div>
+    </div>
+</div>
+<!-- end product list -->
+<!-- blogs -->
+<div class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2>latest blog</h2>
+        </div>
+        <div class="blog">
+            <div class="blog-img">
+                <img src="~/images/JBL_Quantum400_Lifestyle1.png" alt="">
+            </div>
+            <div class="blog-info">
+                <div class="blog-title">
+                    Lorem ipsum dolor sit amet
+                </div>
+                <div class="blog-preview">
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi, eligendi dolore. Sapiente omnis numquam mollitia asperiores animi, veritatis sint illo magnam, voluptatum labore, quam ducimus! Nisi doloremque praesentium laudantium repellat.
+                </div>
+                <button class="btn-flat btn-hover">read more</button>
+            </div>
+        </div>
+        <div class="blog row-revere">
+            <div class="blog-img">
+                <img src="~/images/JBL_TUNE220TWS_Lifestyle_black.png" alt="">
+            </div>
+            <div class="blog-info">
+                <div class="blog-title">
+                    Lorem ipsum dolor sit amet
+                </div>
+                <div class="blog-preview">
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi, eligendi dolore. Sapiente omnis numquam mollitia asperiores animi, veritatis sint illo magnam, voluptatum labore, quam ducimus! Nisi doloremque praesentium laudantium repellat.
+                </div>
+                <button class="btn-flat btn-hover">read more</button>
+            </div>
+        </div>
+        <div class="section-footer">
+            <a href="#" class="btn-flat btn-hover">view all</a>
+        </div>
+    </div>
+</div>
+

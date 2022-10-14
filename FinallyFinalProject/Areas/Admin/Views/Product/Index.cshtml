@@ -1,0 +1,63 @@
+﻿@model List<Product>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="main-panel">
+    <div class="table-wrap">
+        <div class="category">
+            <h2>Product</h2>
+            <a asp-area="Admin" asp-controller="product" asp-action="Create">Create Product</a>
+        </div>
+        @if(TempData["FileName"] != null){
+            <div class="alert alert-danger">@TempData["FileName"]</div>
+        }
+        <table class="table">
+            <thead class="thead-primary">
+                <tr>
+
+                    <th>Image</th>
+                    <th>Model</th>
+                    <th>Price</th>
+                    <th>DiscountPrice</th>
+                    <th>Rating</th>
+                    <th>OrderCount</th>
+                    <th>Colors</th>
+                    <th>Settings</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (Product product in Model)
+                {
+                    <tr>
+
+                        <td><img style="width:170px; height:170px; object-fit:contain;" src="~/BrandNewImages/@product.ProductImages.FirstOrDefault(pi=>pi.IsMain==true)?.Name" alt="" /></td>
+                        <td>@product.Model</td>
+                        <td>@product.Price</td>
+                        <td>@product.DiscountPrice</td>                
+                        <td>
+                            @product.Rating
+                        </td>
+                        <td>@product.OrderCount</td>
+                         <td>
+                             @foreach (ProductColor item in product.ProductColors)
+                            {
+                                <span>@item.Color.ColorName, </span>
+                            }
+                        </td>
+                        <td>
+                            <div class="div">
+                                <a asp-area="admin" asp-controller="product" asp-action="delete" asp-route-id="@product.Id"><i class="fa-solid fa-trash"></i></a>
+                                
+
+                            </div>
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

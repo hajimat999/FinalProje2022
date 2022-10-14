@@ -1,0 +1,172 @@
+﻿@using FinallyFinalProject.HomeVModels
+@model MainShopVModel
+<section class="header-title">
+    <h1>Products</h1>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><span>/</span></li>
+        <li>Product</li>
+    </ul>
+</section>
+
+<!-- products content -->
+<div class="bg-main">
+    <div class="container">
+        <div class="box">
+            <div class="breadcumb">
+                <a href="~/index.html">Home</a>
+                <span><i class='bx bxs-chevrons-right'></i></span>
+                <a asp-controller="shop" asp-action="shop">All products</a>
+            </div>
+        </div>
+        <div class="box">
+            <div class="row">
+                <div class="col-3 filter-col" id="filter-col">
+                    <div class="box filter-toggle-box">
+                        <button class="btn-flat btn-hover" id="filter-close">close</button>
+                    </div>
+                    <div class="box">
+                        <span class="filter-header">
+                            Categories
+                        </span>
+                        <ul class="filter-list">
+                            
+                            @foreach (Category item in Model.Categories)
+                            {
+                                <li><a asp-controller="shop" asp-action="shop" asp-all-route-data="@(new Dictionary<string, string>{{ "Ids[0]", item.Id.ToString() },{ "Ids[1]", "0" },{ "Ids[2]", "0" }})">@item.CategoryName</a></li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="box">
+                        <span class="filter-header">
+                            Price
+                        </span>
+                        <div class="price-range">
+                            <input type="text">
+                            <span>-</span>
+                            <input type="text">
+                        </div>
+                    </div>
+                    
+                    <div class="box">
+                        <span class="filter-header">
+                            Brands
+                        </span>
+                        <ul class="filter-list">
+                            @foreach (Brand item in Model.Brands)
+                            {
+                                <li><a asp-controller="shop" asp-action="shop" asp-all-route-data="@(new Dictionary<string, string>{{ "Ids[0]", "0" },{ "Ids[1]", item.Id.ToString() },{ "Ids[2]", "0" }})">@item.BrandName</a></li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="box">
+                        <span class="filter-header">
+                            Colors
+                        </span>
+                        <ul class="filter-list">
+                            @foreach (Color item in Model.Colors)
+                            {
+                                <li><a asp-controller="shop" asp-action="shop" asp-all-route-data="@(new Dictionary<string, string>{{ "Ids[0]", "0" },{ "Ids[1]", "0" },{ "Ids[2]", item.Id.ToString() }})">@item.ColorName</a></li>
+                            }
+                        </ul>
+                    </div>
+                  
+                </div>
+                <div class="col-9 col-md-12">
+                    <div class="box filter-toggle-box">
+                        <button class="btn-flat btn-hover" id="filter-toggle">filter</button>
+                    </div>
+                    <div class="box">
+                        <div class="row" id="products">
+                            
+                            @if(Model.Products.Count != 0){
+                                foreach (Product item in Model.Products.OrderByDescending(p => p.Id).Take(9))
+                                {
+                                    <div class="col-4 col-md-6 col-sm-12">
+                                        <div class="product-card">
+                                            <div class="product-card-img">
+                                                <img src="~/BrandNewImages/@item.ProductImages.FirstOrDefault(pi=>pi.IsMain == true).Name" alt="">
+                                                <img src="~/BrandNewImages/@item.ProductImages.FirstOrDefault(pi=>pi.IsMain == null).Name" alt="">
+                                            </div>
+                                            <div class="product-card-info">
+                                                <div class="product-btn">
+                                                    <a asp-controller="detail" asp-action="shop" asp-route-id="@item.Id" class="btn-flat btn-hover btn-shop-now">shop now</a>
+                                                    <a asp-controller="detail" asp-action="plus" asp-route-id="@item.Id" class="btn-flat btn-hover btn-cart-add">
+                                                        <i class="bx bxs-cart-add"></i>
+                                                    </a>
+                                                    <button asp-controller="wishlest" asp-action="index" asp-route-id="@item.Id" class="btn-flat btn-hover btn-cart-add">
+                                                        <i class="bx bxs-heart"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="product-card-name">
+                                                    @item.Model
+                                                </div>
+                                                <div class="product-card-name">
+                                                    <span class="rating">
+                                                        @{
+                                                            int starCount = 5 - item.Rating;
+                                                        }
+                                                        @for (int i = 0; i < item.Rating; i++)
+                                                        {
+                                                            <i class="fa-solid fa-star staron"></i>
+                                                        }
+                                                        @for (int i = 0; i < starCount; i++)
+                                                        {
+                                                            <i class="fa-regular fa-star"></i>
+                                                        }
+                                                    </span>
+                                                </div>
+                                                <div class="product-card-price">
+                                                    <span><del>@item.Price</del></span>
+                                                    <span class="curr-price">@item.DiscountPrice</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else{
+                                <h1 style="width:60%; margin:auto; color:red;">There are not any Products</h1>
+                            }
+                           
+
+                            
+                        </div>
+
+                        
+                    </div>
+                    @if(Model.Products.Count() > 9){
+                        <div class="box">
+                            <ul class="pagination">
+                                <li><a href="#"><i class='bx bxs-chevron-left'></i></a></li>
+                                @{
+                                    int id = 2;
+                                    
+                                }
+                                @for (int i = 0; i < Math.Ceiling((decimal)Model.Products.Count() / 9) ; i++)
+                                {
+                                    if(i == 0){
+                                        <li><a asp-controller="shop" asp-action="shop" class="active">1</a></li>
+                                    }
+                                    else{
+                                        <li><a asp-controller="shop" asp-action="shop" asp-route-id="@id">2</a></li>
+                                    }
+                                    id++;
+
+                                }
+                                
+                                
+                               
+                                <li><a href="#"><i class='bx bxs-chevron-right'></i></a></li>
+                            </ul>
+                        </div>
+                    }
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/products.js"></script>
+<script src="~/js/app.js"></script>

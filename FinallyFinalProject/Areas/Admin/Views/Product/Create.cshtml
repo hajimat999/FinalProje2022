@@ -1,0 +1,62 @@
+﻿@model Product
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="main-panel">
+    <div class="create">
+        <h2>Create Product</h2>
+        <div class="alert alert-danger" asp-validation-summary="ModelOnly"></div>
+        <form method="post" enctype="multipart/form-data">
+            <label for="">Images:</label> <br>
+            <input asp-for="Photos" placeholder="Name"><br>
+            <span class="text-danger" asp-validation-for="Photos"></span> <br />
+
+            <label for="">MainPhoto:</label> <br>
+            <input asp-for="MainPhoto" placeholder="Name"><br>
+            <span class="text-danger" asp-validation-for="MainPhoto"></span> <br />
+
+            <label for="">HoverPhoto:</label> <br>
+            <input asp-for="HoverPhoto" placeholder="Name"><br>
+            <span class="text-danger" asp-validation-for="HoverPhoto"></span> <br />
+
+            <label for="">Model:</label> <br>
+            <input asp-for="Model" placeholder="Model"><br>
+            <span class="text-danger" asp-validation-for="Model"></span> <br />
+
+            <label for="">Price:</label> <br>
+            <input asp-for="Price" placeholder="Price"><br>
+            <span class="text-danger" asp-validation-for="Price"></span> <br />
+
+            <label for="">Description:</label> <br>
+            <input asp-for="Description" placeholder="Description"><br>
+            <span class="text-danger" asp-validation-for="Description"></span> <br />
+
+
+            <label for="">Product Informations:</label> <br />
+            <select class="form-control select1" style="width:50%;background-color: #F5F5F5;border-radius: 7px; outline: none;border:none; margin-top:10px; margin-bottom:20px;" asp-for="InformationId" asp-items="@(new SelectList(ViewBag.Information, "Id" ,"Key"))"></select> <br />
+
+            <label for="">Product Categories:</label> <br />
+            <select class="form-control select1" style="width:50%;background-color: #F5F5F5;border-radius: 7px; outline: none;border:none; margin-top:10px; margin-bottom:20px;" asp-for="CategoryId" asp-items="@(new SelectList(ViewBag.Category, "Id" ,"CategoryName"))"></select> <br />
+
+            <label for="">Product Colors:</label> <br />
+            <select class="form-control" style="width:50%;background-color: #F5F5F5;border-radius: 7px; outline: none;border:none; margin-top:10px; margin-bottom:20px;" asp-for="ColorIds" asp-items="@(new SelectList(ViewBag.Color, "Id" ,"ColorName"))"></select> <br />
+
+            <label for="">Product Brands:</label> <br />
+            <select class="form-control select1" style="width:50%;background-color: #F5F5F5;border-radius: 7px; outline: none;border:none; margin-top:10px; margin-bottom:20px;" asp-for="BrandId" asp-items="@(new SelectList(ViewBag.Brand, "Id" ,"BrandName"))"></select> <br />
+
+            <label for="">Product Discount Amounts:</label> <br />
+            <select class="form-control select1" style="width:50%;background-color: #F5F5F5;border-radius: 7px; outline: none;border:none; margin-top:10px; margin-bottom:20px;" asp-for="DiscountAmountId" asp-items="@(new SelectList(ViewBag.DiscountAmount, "Id" ,"Amount"))"></select> <br />
+
+
+            <label for="">IsSale:</label> 
+            <input asp-for="OnSale" type="checkbox" />
+            <span class="text-danger" asp-validation-for="OnSale"></span> <br />
+
+            
+
+            <button style="margin-bottom:30px;" type="submit">Create</button>
+        </form>
+    </div>
+</div>
+
+
